@@ -18,6 +18,10 @@ app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true
 }));
+app.options('*', cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}))
 app.use(express.json({limit: '50mb'}));
 // app.use(express.);
 app.use(cookieParser());
