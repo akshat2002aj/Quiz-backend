@@ -31,7 +31,7 @@ router.post(
       };
     }
 
-    for (let i = 0; i < options.size(); i++) {
+    for (let i = 0; i < options.length; i++) {
       if (options[i].image) {
         const myCloud = await cloudinary.v2.uploader.upload(options[i].image, {
           folder: "Options",
