@@ -6,6 +6,7 @@ const bodyParser = require("body-parser")
 const cors = require('cors');
 const User = require('./controller/user')
 const Quiz = require('./controller/quiz')
+const Question = require('./controller/question')
 
 // config
 if(process.env.NODE_ENV !== "PRODUCTION"){
@@ -30,6 +31,7 @@ app.use(bodyParser.urlencoded({extended: true, limit: "50mb"}));
 // import routes
 app.use('/api/v1/user', User);
 app.use('/api/v1/quiz', Quiz);
+app.use('/api/v1/question', Question)
 
 
 // It's for errorHandling

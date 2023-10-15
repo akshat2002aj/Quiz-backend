@@ -39,7 +39,7 @@ const questionSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "Quiz",
     required: [true, "Quiz Id Needed!"]
-  },
+  },  
 });
 
 const Question = mongoose.model("Question", questionSchema);
