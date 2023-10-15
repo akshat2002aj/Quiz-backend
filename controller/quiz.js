@@ -45,6 +45,21 @@ router.post(
   })
 );
 
+router.post(
+  "/get-all-quiz",
+  isAuthenticated,
+  isAdmin("admin"),
+  catchAsyncErrors(async (req, res, next) => {
+
+    let quiz = await Quiz.find();
+
+    res.status(201).json({
+      success: true,
+      quiz,
+    });
+  })
+);
+
 router.put(
   "/update-quiz/:id",
   isAuthenticated,
