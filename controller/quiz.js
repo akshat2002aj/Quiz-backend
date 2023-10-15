@@ -45,7 +45,7 @@ router.post(
   })
 );
 
-router.post(
+router.get(
   "/get-all-quiz",
   isAuthenticated,
   isAdmin("admin"),
