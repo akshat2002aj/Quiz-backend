@@ -13,7 +13,7 @@ router.post(
   isAuthenticated,
   isAdmin("admin"),
   CatchAsyncError(async (req, res, next) => {
-    const { description, imageDescription, options, correctOption } = req.body;
+    let { description, imageDescription, options, correctOption } = req.body;
     
     const data = await Quiz.findById(req.params.id);
 
