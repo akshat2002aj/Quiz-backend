@@ -35,6 +35,11 @@ const questionSchema = new mongoose.Schema({
     type: Number,
     required: [true,"Please enter the option which is correct"],
   },
+  quiz:    {
+    type: mongoose.Schema.ObjectId,
+    ref: "Quiz",
+    required: [true, "Quiz Id Needed!"]
+  },
 });
 
 const Question = mongoose.model("Question", questionSchema);

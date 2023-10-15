@@ -47,7 +47,8 @@ router.post(
         description,
         imageDescription,
         options,
-        correctOption
+        correctOption,
+        quiz: data._id
     })
 
     res.status(201).json({
