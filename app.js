@@ -23,8 +23,8 @@ app.use(cors({ origin: true, credentials: true }));
 //     credentials: true
 // }))
 app.use(express.json({limit: '50mb'}));
-// app.use(express.);
 app.use(cookieParser());
+// app.use(express.);
 app.use(bodyParser.urlencoded({extended: true, limit: "50mb"}));
 
 // import routes
