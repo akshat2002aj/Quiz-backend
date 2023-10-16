@@ -137,6 +137,25 @@ router.get(
   })
 );
 
+// all user
+router.get(
+  "/get-all-user",
+  isAuthenticated,
+  isAdmin('admin'),
+  CatchAsyncError(async (req, res, next) => {
+    try {
+      const users = await User.find();
+
+      res.status(200).json({
+        success: true,
+        users,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
 // log out user
 router.get(
   "/logout",
