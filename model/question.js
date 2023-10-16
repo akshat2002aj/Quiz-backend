@@ -3,18 +3,16 @@ const mongoose = require("mongoose");
 const questionSchema = new mongoose.Schema({
   description: {
     type: String,
-    required: [true," Please enter the Description of the Question"],
+    required: [true, " Please enter the Description of the Question"],
   },
 
-  imageDescription:{
-      image: {
-        public_id: {
-          type: String,
-        },
-        url: {
-          type: String,
-        },
-      },
+  imageDescription: {
+    public_id: {
+      type: String,
+    },
+    url: {
+      type: String,
+    },
   },
   options: [
     {
@@ -33,13 +31,13 @@ const questionSchema = new mongoose.Schema({
   ],
   correctOption: {
     type: Number,
-    required: [true,"Please enter the option which is correct"],
+    required: [true, "Please enter the option which is correct"],
   },
-  quiz:    {
+  quiz: {
     type: mongoose.Schema.ObjectId,
     ref: "Quiz",
-    required: [true, "Quiz Id Needed!"]
-  },  
+    required: [true, "Quiz Id Needed!"],
+  },
 });
 
 const Question = mongoose.model("Question", questionSchema);
