@@ -60,4 +60,27 @@ router.post(
   })
 );
 
+router.post(
+  "/get-all-question/:id",
+  isAuthenticated,
+  isAdmin("admin"),
+  CatchAsyncError(async (req, res, next) => {
+
+    const data = await Quiz.findById(req.params.id);
+
+    if (!data) {
+      return next(new ErrorHandler(`Quiz not found with this id`, 404));
+    }
+
+    const questions = await Question.find({
+      quiz:req.params.id
+    })
+
+    res.status(201).json({
+        succes: true,
+        questions
+    })
+  })
+);
+
 module.exports = router;
