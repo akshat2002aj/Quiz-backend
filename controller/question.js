@@ -29,6 +29,7 @@ router.post(
         public_id: myCloud.public_id,
         url: myCloud.secure_url,
       };
+      console.log(imageDescription);
     }
 
     for (let i = 0; i < options.length; i++) {
@@ -42,14 +43,15 @@ router.post(
         };
       }
     }
-
-    const question = await Question.create({
-        description,
-        imageDescription,
-        options,
-        correctOption,
-        quiz: data._id
-    })
+    const d = {
+      description,
+      imageDescription,
+      options,
+      correctOption,
+      quiz: data._id
+  }
+  console.log(d);
+    const question = await Question.create(d)
 
     res.status(201).json({
         succes: true,
