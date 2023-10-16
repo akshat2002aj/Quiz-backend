@@ -60,7 +60,7 @@ router.post(
   })
 );
 
-router.post(
+router.get(
   "/get-all-question/:id",
   isAuthenticated,
   isAdmin("admin"),
