@@ -157,7 +157,7 @@ router.get(
 );
 
 // delete user
-router.get(
+router.delete(
   "/delete-user/:id",
   isAuthenticated,
   isAdmin('admin'),
