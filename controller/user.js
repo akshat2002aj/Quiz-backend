@@ -156,6 +156,31 @@ router.get(
   })
 );
 
+// delete user
+router.get(
+  "/delete-user/:id",
+  isAuthenticated,
+  isAdmin('admin'),
+  CatchAsyncError(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.params.id);
+
+      if(!user){
+        return next(new ErrorHandler("No User Found!", 401))
+      }
+
+      const u = await User.findByIdAndDelete(req.params.id)
+
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
 // log out user
 router.get(
   "/logout",
