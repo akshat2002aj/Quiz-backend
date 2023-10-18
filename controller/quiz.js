@@ -1,5 +1,6 @@
 const cloudinary = require("cloudinary");
 const Quiz = require("../model/quiz");
+const Question = require("../model/question")
 const { singleUploadAvatar } = require("../multer");
 const ErrorHandler = require("../utils/ErrorHandler");
 const CatchAsyncError = require("../middleware/catchAsyncErrors");
@@ -59,6 +60,48 @@ router.get(
       })
     }
 
+    res.status(201).json({
+      success: true,
+      quiz,
+    });
+  })
+);
+
+router.get(
+  "/get-quiz/:id",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+
+    let quiz  = await Quiz.findById(req.params.id);
+
+    if (!quiz) {
+      return next(new ErrorHandler(`Quiz not found with this id`, 404));
+    }
+
+    let questions  = await Question.find({
+      quiz: req.params.id
+    })
+
+    if(req.user.role === 'admin'){
+      quiz = await Quiz.findById(req.params.id);
+      if(quiz){
+        quiz= {
+          ...quiz._doc,
+          questions: questions.length
+        }
+      }
+    }else{
+      quiz = await Quiz.find({
+        published: true,
+        _id: req.params.id
+      })
+      if(quiz.length >0){
+        quiz = {
+          ...quiz[0]._doc,
+          questions: questions.length
+        }
+      }
+    }
     res.status(201).json({
       success: true,
       quiz,

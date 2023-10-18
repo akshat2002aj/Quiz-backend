@@ -19,7 +19,17 @@ router.post(
       return next(new ErrorHandler(`Quiz not found with this id`, 404));
     }
 
-    const register = await Register.create({
+    let register = await Register.find({
+      user: req.user.id,
+      quiz: req.params.id
+    })
+
+    if(register){
+      return next(new ErrorHandler(`User already registered`, 401));
+    }
+
+
+    register = await Register.create({
         user: req.user.id,
         quiz: req.params.id
     })
