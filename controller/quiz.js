@@ -48,10 +48,15 @@ router.post(
 router.get(
   "/get-all-quiz",
   isAuthenticated,
-  isAdmin("admin"),
   catchAsyncErrors(async (req, res, next) => {
-
-    let quiz = await Quiz.find();
+    let quiz;
+    if(req.user.role === 'admin'){
+      quiz = await Quiz.find();
+    }else{
+      quiz = await Quiz.find({
+        published: true
+      })
+    }
 
     res.status(201).json({
       success: true,

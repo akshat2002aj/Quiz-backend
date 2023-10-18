@@ -24,13 +24,7 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     default: "user",
-  },
-  quiz: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "Quiz",
-    },
-  ],
+  }
 });
 
 //  Hash password

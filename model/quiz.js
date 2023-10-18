@@ -27,6 +27,10 @@ const quizschema = new mongoose.Schema({
        type: Date,
        required: [true, "Please provide the date!"],
    },
+   published:{
+    type: Boolean,
+    default: false
+   } 
 })
 
 module.exports = mongoose.model("Quiz", quizschema)

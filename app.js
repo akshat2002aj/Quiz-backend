@@ -7,6 +7,7 @@ const cors = require('cors');
 const User = require('./controller/user')
 const Quiz = require('./controller/quiz')
 const Question = require('./controller/question')
+const Register = require('./controller/register')
 
 // config
 if(process.env.NODE_ENV !== "PRODUCTION"){
@@ -32,6 +33,7 @@ app.use(bodyParser.urlencoded({extended: true, limit: "50mb"}));
 app.use('/api/v1/user', User);
 app.use('/api/v1/quiz', Quiz);
 app.use('/api/v1/question', Question)
+app.use('/api/v1/register', Register)
 
 
 // It's for errorHandling
