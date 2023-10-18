@@ -52,7 +52,7 @@ router.get(
     let quiz;
     if(req.user.role === 'admin'){
       quiz = await Quiz.find();
-      
+
     }else{
       quiz = await Quiz.find({
         published: true
@@ -98,6 +98,27 @@ router.put(
     res.status(201).json({
       success: true,
       quiz,
+    });
+  })
+);
+
+router.put(
+  "/publish/:id",
+  isAuthenticated,
+  isAdmin("admin"),
+  catchAsyncErrors(async (req, res, next) => {
+
+    const data = await Quiz.findById(req.params.id);
+
+    if (!data) {
+      return next(new ErrorHandler(`Quiz not found with this id`, 404));
+    }
+
+    data.published = !data.published;
+    data.save();
+    res.status(201).json({
+      success: true,
+      data,
     });
   })
 );
