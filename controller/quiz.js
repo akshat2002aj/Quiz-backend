@@ -52,6 +52,7 @@ router.get(
     let quiz;
     if(req.user.role === 'admin'){
       quiz = await Quiz.find();
+      
     }else{
       quiz = await Quiz.find({
         published: true
