@@ -77,4 +77,25 @@ router.get(
   })
 );
 
+router.get(
+  "/get-registered-quiz/:id",
+  isAuthenticated,
+  isAdmin('admin'),
+  CatchAsyncError(async (req, res, next) => {
+    
+    const quiz = await Quiz.findById(req.params.id);
+
+    if (!quiz) {
+      return next(new ErrorHandler(`Quiz not found with this id`, 404));
+    }
+
+    let register = await Register.find({quiz: req.params.id})
+
+    res.status(201).json({
+        succes: true,
+        register
+    })
+  })
+);
+
 module.exports = router;
