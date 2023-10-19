@@ -3,12 +3,10 @@ const Quiz = require("../model/quiz");
 const Question = require("../model/question")
 const { singleUploadAvatar } = require("../multer");
 const ErrorHandler = require("../utils/ErrorHandler");
-const CatchAsyncError = require("../middleware/catchAsyncErrors");
 const express = require("express");
 const { isAdmin, isAuthenticated } = require("../middleware/auth");
-const sendMail = require("../utils/SendMail");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
-const getDataUri = require("../utils/dataUri");
+const Register = require('../model/register')
 
 const router = express.Router();
 
@@ -82,12 +80,15 @@ router.get(
       quiz: req.params.id
     })
 
+    let registrations = await Register.find({quiz: req.params.id})
+
     if(req.user.role === 'admin'){
       quiz = await Quiz.findById(req.params.id);
       if(quiz){
         quiz= {
           ...quiz._doc,
-          questions: questions.length
+          questions: questions.length,
+          registrations: registrations.length
         }
       }
     }else{
@@ -98,7 +99,8 @@ router.get(
       if(quiz.length >0){
         quiz = {
           ...quiz[0]._doc,
-          questions: questions.length
+          questions: questions.length,
+          registrations: registrations.length
         }
       }
     }
