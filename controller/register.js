@@ -86,8 +86,7 @@ router.get(
     }
 
     let register = await Register.find({ quiz: req.params.id })
-      .populate("user", "name")
-      .populate("quiz", "name");
+      .populate("user", "name email")
 
     res.status(201).json({
       succes: true,
