@@ -1,5 +1,6 @@
 const cloudinary = require("cloudinary");
 const Quiz = require("../model/quiz");
+const Question = require("../model/question")
 const { singleUploadAvatar } = require("../multer");
 const ErrorHandler = require("../utils/ErrorHandler");
 const CatchAsyncError = require("../middleware/catchAsyncErrors");
@@ -37,6 +38,41 @@ router.post(
     res.status(201).json({
         succes: true,
         register
+    })
+  })
+);
+
+router.get(
+  "/start-quiz/:id",
+  isAuthenticated,
+  CatchAsyncError(async (req, res, next) => {
+    
+    const quiz = await Quiz.findById(req.params.id);
+
+    if (!quiz) {
+      return next(new ErrorHandler(`Quiz not found with this id`, 404));
+    }
+
+    let register = await Register.find({
+      user: req.user.id,
+      quiz: req.params.id
+    })
+
+    if(!register){
+      return next(new ErrorHandler(`User is not registered`, 401));
+    }
+
+    if(new Date(quiz.startTime) > new Date()){
+      return next(new ErrorHandler(`Quiz not started yet`, 401))
+    }
+
+    const questions = await Question.find({
+      quiz: req.params.id
+    }).select('-correctOption')
+
+    res.status(201).json({
+        succes: true,
+        questions
     })
   })
 );
