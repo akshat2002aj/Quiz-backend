@@ -66,6 +66,10 @@ router.get(
       return next(new ErrorHandler(`Quiz not started yet`, 401));
     }
 
+    if(new Date(quiz.endTime) < new Date()){
+      return next(new ErrorHandler(`Quiz expired`, 401))
+    }
+
     const questions = await Question.find({
       quiz: req.params.id,
     }).select("-correctOption");
