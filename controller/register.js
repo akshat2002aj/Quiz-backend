@@ -24,7 +24,7 @@ router.post(
       quiz: req.params.id,
     });
 
-    if (register) {
+    if (!register) {
       return next(new ErrorHandler(`User already registered`, 401));
     }
 
