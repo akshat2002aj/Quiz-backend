@@ -19,7 +19,10 @@ const registerSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  timeTaken: {
+  startTime: {
+    type: Date,
+  },
+  endTime: {
     type: Date,
   },
   testGiven:{

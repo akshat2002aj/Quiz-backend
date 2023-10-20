@@ -59,6 +59,9 @@ router.get(
       return next(new ErrorHandler(`User is not registered`, 401));
     }
 
+    register.startTime = Date.now();
+    register.save();
+
     if (new Date(quiz.startTime) > new Date()) {
       return next(new ErrorHandler(`Quiz not started yet`, 401));
     }
@@ -70,6 +73,7 @@ router.get(
     res.status(201).json({
       succes: true,
       questions,
+      startTime: register.startTime
     });
   })
 );
