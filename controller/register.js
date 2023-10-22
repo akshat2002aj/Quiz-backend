@@ -50,7 +50,7 @@ router.get(
       return next(new ErrorHandler(`Quiz not found with this id`, 404));
     }
 
-    let register = await Register.find({
+    let register = await Register.findOne({
       user: req.user.id,
       quiz: req.params.id,
     });
@@ -59,15 +59,24 @@ router.get(
       return next(new ErrorHandler(`User is not registered`, 401));
     }
 
-    register.startTime = Date.now();
-    register.save();
+    register = await Register.findByIdAndUpdate(
+      register._id,
+      {
+        startTime: Date.now(),
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    // register.save();
 
     if (new Date(quiz.startTime) > new Date()) {
       return next(new ErrorHandler(`Quiz not started yet`, 401));
     }
 
-    if(new Date(quiz.endTime) < new Date()){
-      return next(new ErrorHandler(`Quiz expired`, 401))
+    if (new Date(quiz.endTime) < new Date()) {
+      return next(new ErrorHandler(`Quiz expired`, 401));
     }
 
     const questions = await Question.find({
@@ -77,7 +86,7 @@ router.get(
     res.status(201).json({
       succes: true,
       questions,
-      startTime: register.startTime
+      startTime: register.startTime,
     });
   })
 );
@@ -94,7 +103,8 @@ router.get(
     }
 
     let register = await Register.find({ quiz: req.params.id })
-      .populate("user", "name email").select('-answers')
+      .populate("user", "name email")
+      .select("-answers");
 
     res.status(201).json({
       succes: true,

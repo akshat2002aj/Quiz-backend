@@ -27,6 +27,10 @@ const quizschema = new mongoose.Schema({
        type: Date,
        required: [true, "Please provide the date!"],
    },
+   duration: {
+    type: Number,
+    required: [true, "No. of minutes required(duration)"]
+   },
    published:{
     type: Boolean,
     default: false
