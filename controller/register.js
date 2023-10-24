@@ -114,16 +114,12 @@ router.post(
     if (!register) {
       return next(new ErrorHandler(`User is not registered`, 401));
     }
-
-    if(register.testGiven){
-      return next(new ErrorHandler(`Test already given`, 401));
-    }
     
     let marksScored = 0;
     let totalMarks = 0;
 
     let duration = +new Date(register.endTime) - +new Date(register.startTime);
-    if(duration > quiz.duration * 1000 * 20){
+    if(duration > quiz.duration * 1000 * 60){
       console.lof(duration, quiz.duration);
       return next(new ErrorHandler(`Quiz expired`, 401))
     }
