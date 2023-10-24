@@ -85,7 +85,7 @@ router.get(
     let registered;
     let testGiven;
     if(req.user.role === 'user'){
-      register= await Register.findOne({
+      let register= await Register.findOne({
         quiz: req.params.id,
         user: req.user.id
       })
