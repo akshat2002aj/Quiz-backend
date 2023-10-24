@@ -67,6 +67,7 @@ router.post(
       register._id,
       {
         startTime: req.body.time,
+        testGiven: true
       },
       {
         new: true,
