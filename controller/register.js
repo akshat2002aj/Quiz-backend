@@ -59,7 +59,7 @@ router.post(
       return next(new ErrorHandler(`User is not registered`, 401));
     }
 
-    if(register.testStatus !== "Registered"){
+    if (register.testStatus !== "Registered") {
       return next(new ErrorHandler(`Test already given`, 401));
     }
 
@@ -67,7 +67,7 @@ router.post(
       register._id,
       {
         startTime: new Date(),
-        testStatus: "Processing"
+        testStatus: "Processing",
       },
       {
         new: true,
@@ -115,29 +115,38 @@ router.post(
       return next(new ErrorHandler(`User is not registered`, 401));
     }
 
-    if(register.endTime){
+    if (register.endTime) {
       return next(new ErrorHandler(`Test Submitted already`, 401));
     }
-    
+
     let marksScored = 0;
     let totalMarks = 0;
 
     let duration = +new Date(register.endTime) - +new Date(register.startTime);
-    if(duration > ((quiz.duration * 1000 * 60) + 10 * 1000)){
-      return next(new ErrorHandler(`Quiz expired`, 401))
+    if (duration > quiz.duration * 1000 * 60 + 10 * 1000) {
+      return next(new ErrorHandler(`Quiz expired`, 401));
     }
 
-    const data = await Promise.all(req.body.questions.map(async (i) => {
-      let question = await Question.findById(i.question);
-      question.correctOption === i.correctOption ? marksScored = marksScored + 1 : null;
-    }));
+    const data = await Promise.all(
+      req.body.questions.map(async (i) => {
+        let question = await Question.findById(i.question);
+        question.correctOption === i.correctOption
+          ? (marksScored = marksScored + 1)
+          : null;
+      })
+    );
+
+    totalMarks = await Question.count({
+      quiz: req.params.id,
+    });
+    
     register = await Register.findByIdAndUpdate(
       register._id,
       {
         endTime: req.body.time,
         totalMarks: totalMarks,
         marksScored: marksScored,
-        testStatus: "Submitted"
+        testStatus: "Submitted",
       },
       {
         new: true,
@@ -147,7 +156,7 @@ router.post(
 
     res.status(201).json({
       succes: true,
-      register
+      register,
     });
   })
 );
