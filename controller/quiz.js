@@ -16,7 +16,7 @@ router.post(
   isAdmin("admin"),
   singleUploadAvatar,
   catchAsyncErrors(async (req, res, next) => {
-    const { name, description, startTime, endTime, image } = req.body;
+    const { name, description, startTime, endTime, image, duration } = req.body;
     console.log(req.body);
     // const file = getDataUri(req.file);
 
@@ -29,6 +29,7 @@ router.post(
       description,
       startTime,
       endTime,
+      duration,
       image: {
         public_id: myCloud.public_id,
         url: myCloud.secure_url,
