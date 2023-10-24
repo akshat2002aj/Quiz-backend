@@ -27,6 +27,7 @@ const registerSchema = new mongoose.Schema({
   },
   testStatus:{
     type: String,
+    default: "Registered",
     enum: ["Registered", "Processing", "Submitted"]
   },
   answers:[
