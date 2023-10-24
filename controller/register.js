@@ -119,8 +119,8 @@ router.post(
     let totalMarks = 0;
 
     let duration = +new Date(register.endTime) - +new Date(register.startTime);
-    if(duration > quiz.duration * 1000 * 60){
-      console.lof(duration, quiz.duration);
+    if(duration > (quiz.duration + 1) * 1000 * 60){
+      console.log(duration, quiz.duration);
       return next(new ErrorHandler(`Quiz expired`, 401))
     }
 
@@ -128,6 +128,7 @@ router.post(
       let question = await Question.findById(i.question);
       question.correctOption === correctOption  ? marksScored = marksScored + 1 : null;
       totalMarks = totalMarks + 1;
+      console.log(totalMarks, marksScored)
     })
 
     register = await Register.findByIdAndUpdate(
