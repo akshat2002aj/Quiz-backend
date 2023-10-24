@@ -40,7 +40,7 @@ router.post(
   })
 );
 
-router.get(
+router.post(
   "/start-quiz/:id",
   isAuthenticated,
   CatchAsyncError(async (req, res, next) => {
@@ -66,7 +66,7 @@ router.get(
     register = await Register.findByIdAndUpdate(
       register._id,
       {
-        startTime: Date.now(),
+        startTime: req.body.time,
       },
       {
         new: true,
@@ -91,6 +91,65 @@ router.get(
       succes: true,
       questions,
       startTime: register.startTime,
+    });
+  })
+);
+
+router.post(
+  "/submit-quiz/:id",
+  isAuthenticated,
+  CatchAsyncError(async (req, res, next) => {
+    const quiz = await Quiz.findById(req.params.id);
+
+    if (!quiz) {
+      return next(new ErrorHandler(`Quiz not found with this id`, 404));
+    }
+
+    let register = await Register.findOne({
+      user: req.user.id,
+      quiz: req.params.id,
+    });
+
+    if (!register) {
+      return next(new ErrorHandler(`User is not registered`, 401));
+    }
+
+    if(register.testGiven){
+      return next(new ErrorHandler(`Test already given`, 401));
+    }
+    
+    let marksScored = 0;
+    let totalMarks = 0;
+
+    let duration = +new Date(register.endTime) - +new Date(register.startTime);
+    if(duration > quiz.duration * 1000 * 20){
+      console.lof(duration, quiz.duration);
+      return next(new ErrorHandler(`Quiz expired`, 401))
+    }
+
+    req.body.questions.map(async(i)=>{
+      let question = await Question.findById(i.question);
+      question.correctOption === correctOption  ? marksScored = marksScored + 1 : null;
+      totalMarks = totalMarks + 1;
+    })
+
+    register = await Register.findByIdAndUpdate(
+      register._id,
+      {
+        endTime: req.body.time,
+        totalMarks,
+        marksScored
+
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    res.status(201).json({
+      succes: true,
+      register
     });
   })
 );
