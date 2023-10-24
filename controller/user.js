@@ -11,8 +11,6 @@ const sendToken = require("../utils/jwtToken");
 
 router.post(
   "/create-user",
-  isAuthenticated,
-  isAdmin("admin"),
   CatchAsyncError(async (req, res, next) => {
     const { name, email, password } = req.body;
     const userEmail = await User.findOne({ email });
