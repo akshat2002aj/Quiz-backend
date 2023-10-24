@@ -94,6 +94,7 @@ router.get(
         registered = false
       }else{
         registered = true
+        console.log(registered)
         if(registered.testGiven){
           testGiven = true
         }
