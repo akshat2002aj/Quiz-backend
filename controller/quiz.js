@@ -85,17 +85,17 @@ router.get(
     let registered;
     let testGiven;
     if(req.user.role === 'user'){
-      registered = await Register.findOne({
+      register= await Register.findOne({
         quiz: req.params.id,
         user: req.user.id
       })
   
-      if(!registered){
+      if(!register){
         registered = false
       }else{
         registered = true
-        console.log(registered)
-        if(registered.testGiven){
+        // console.log(registered)
+        if(register.testGiven){
           testGiven = true
         }
         else{
