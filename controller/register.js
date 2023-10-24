@@ -59,6 +59,10 @@ router.get(
       return next(new ErrorHandler(`User is not registered`, 401));
     }
 
+    if(register.testGiven){
+      return next(new ErrorHandler(`Test already given`, 401));
+    }
+
     register = await Register.findByIdAndUpdate(
       register._id,
       {

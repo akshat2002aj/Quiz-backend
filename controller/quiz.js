@@ -82,6 +82,7 @@ router.get(
 
     let registrations = await Register.find({quiz: req.params.id})
     let registered;
+    let testGiven;
     if(req.user.role === 'user'){
       registered = await Register.findOne({
         quiz: req.params.id,
@@ -92,6 +93,12 @@ router.get(
         registered = false
       }else{
         registered = true
+        if(registered.testGiven){
+          testGiven = true
+        }
+        else{
+          testGiven = false
+        }
       }
     }
 
@@ -114,7 +121,8 @@ router.get(
           ...quiz[0]._doc,
           questions: questions.length,
           registrations: registrations.length,
-          registered
+          registered,
+          testGiven
         }
       }
     }
