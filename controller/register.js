@@ -59,15 +59,15 @@ router.post(
       return next(new ErrorHandler(`User is not registered`, 401));
     }
 
-    if(register.testGiven){
+    if(register.testStatus !== "Registered"){
       return next(new ErrorHandler(`Test already given`, 401));
     }
 
     register = await Register.findByIdAndUpdate(
       register._id,
       {
-        startTime: req.body.time,
-        testGiven: true
+        startTime: new Date(),
+        testStatus: "Processing"
       },
       {
         new: true,
@@ -123,25 +123,21 @@ router.post(
     let totalMarks = 0;
 
     let duration = +new Date(register.endTime) - +new Date(register.startTime);
-    if(duration > (quiz.duration + 1) * 1000 * 60){
-      console.log(duration, quiz.duration);
+    if(duration > ((quiz.duration * 1000 * 60) + 10 * 1000)){
       return next(new ErrorHandler(`Quiz expired`, 401))
     }
 
     const data = await Promise.all(req.body.questions.map(async (i) => {
       let question = await Question.findById(i.question);
       question.correctOption === i.correctOption ? marksScored = marksScored + 1 : null;
-      totalMarks = totalMarks + 1;
-      console.log("answer", totalMarks, marksScored);
     }));
-
-    console.log(totalMarks, marksScored);
     register = await Register.findByIdAndUpdate(
       register._id,
       {
         endTime: req.body.time,
         totalMarks: totalMarks,
-        marksScored: marksScored
+        marksScored: marksScored,
+        testStatus: "Submitted"
       },
       {
         new: true,

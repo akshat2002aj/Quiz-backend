@@ -25,9 +25,9 @@ const registerSchema = new mongoose.Schema({
   endTime: {
     type: Date,
   },
-  testGiven:{
-    type: Boolean,
-    default: false
+  testStatus:{
+    type: String,
+    enum: ["Registered", "Processing", "Submitted"]
   },
   answers:[
     {
