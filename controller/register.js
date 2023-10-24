@@ -124,7 +124,7 @@ router.post(
       return next(new ErrorHandler(`Quiz expired`, 401))
     }
 
-    req.body.questions.map(async(i)=>{
+    await req.body.questions.map(async(i)=>{
       let question = await Question.findById(i.question);
       question.correctOption === i.correctOption  ? marksScored = marksScored + 1 : null;
       totalMarks = totalMarks + 1;
