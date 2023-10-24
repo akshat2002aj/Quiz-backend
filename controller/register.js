@@ -114,6 +114,10 @@ router.post(
     if (!register) {
       return next(new ErrorHandler(`User is not registered`, 401));
     }
+
+    if(register.endTime){
+      return next(new ErrorHandler(`Test Submitted already`, 401));
+    }
     
     let marksScored = 0;
     let totalMarks = 0;
@@ -124,12 +128,13 @@ router.post(
       return next(new ErrorHandler(`Quiz expired`, 401))
     }
 
-    await req.body.questions.map(async(i)=>{
+    const data = await Promise.all(req.body.questions.map(async (i) => {
       let question = await Question.findById(i.question);
-      question.correctOption === i.correctOption  ? marksScored = marksScored + 1 : null;
+      question.correctOption === i.correctOption ? marksScored = marksScored + 1 : null;
       totalMarks = totalMarks + 1;
-      console.log("answr",totalMarks, marksScored)
-    })
+      console.log("answer", totalMarks, marksScored);
+    }));
+
     console.log(totalMarks, marksScored);
     register = await Register.findByIdAndUpdate(
       register._id,
