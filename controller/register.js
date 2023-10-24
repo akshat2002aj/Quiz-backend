@@ -128,16 +128,15 @@ router.post(
       let question = await Question.findById(i.question);
       question.correctOption === i.correctOption  ? marksScored = marksScored + 1 : null;
       totalMarks = totalMarks + 1;
-      console.log(totalMarks, marksScored)
+      console.log("answr",totalMarks, marksScored)
     })
-
+    console.log(totalMarks, marksScored);
     register = await Register.findByIdAndUpdate(
       register._id,
       {
         endTime: req.body.time,
-        totalMarks,
-        marksScored
-
+        totalMarks: totalMarks,
+        marksScored: marksScored
       },
       {
         new: true,
