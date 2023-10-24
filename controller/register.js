@@ -126,7 +126,7 @@ router.post(
 
     req.body.questions.map(async(i)=>{
       let question = await Question.findById(i.question);
-      question.correctOption === correctOption  ? marksScored = marksScored + 1 : null;
+      question.correctOption === i.correctOption  ? marksScored = marksScored + 1 : null;
       totalMarks = totalMarks + 1;
       console.log(totalMarks, marksScored)
     })
