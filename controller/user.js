@@ -92,7 +92,7 @@ router.post(
         rollNo,
       });
 
-      sendToken(newUser, 201, res);
+      sendToken(user, 201, res);
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
     }
