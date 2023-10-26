@@ -98,8 +98,8 @@ router.post(
           message: `<div><h3>Dear ${user.name},</h3>
           <p>We are thrilled to welcome you to QuizNest ! Your registration is now complete, and you're all set to embark on a journey of knowledge and fun.</p>
           <p>Here are your login credentials:<br>
-          <b>Username: </b>${user.email}
-          <b>Password: </b>${user.password}
+          <b>Username: </b>${user.email}<br>
+          <b>Password: </b>${password}
           </p>
           <p>We're excited to have you as a part of our community. Get ready to explore a world of quizzes and challenge your intellect. If you ever need assistance or have any questions, our support team is here to help.<p>
           <h4>Thanks & Regards,</h4>
