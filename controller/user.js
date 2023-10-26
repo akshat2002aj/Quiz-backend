@@ -85,7 +85,7 @@ router.post(
         return next(new ErrorHandler("User already exists", 400));
       }
 
-      const user = User.create({
+      const user = await User.create({
         name,
         email,
         password,
