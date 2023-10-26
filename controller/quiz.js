@@ -95,7 +95,7 @@ router.get(
       }else{
         registered = true
         // console.log(registered)
-        if(register.testStatus === "Submitted"){
+        if(register.testStatus !== "Registered"){
           testGiven = true
         }
         else{
