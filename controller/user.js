@@ -65,7 +65,6 @@ const createActivationToken = (user) => {
 router.post(
   "/activation",
   CatchAsyncError(async (req, res, next) => {
-    try {
       const { activation_token } = req.body;
 
       const newUser = jwt.verify(
@@ -92,25 +91,27 @@ router.post(
         rollNo,
       });
 
-      sendToken(user, 201, res);
-    } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
-    }
+      try {
+        await sendMail({
+          email: user.email,
+          subject: "Welcome to QuizNest",
+          message: `<div><h3>Dear ${user.name},</h3>
+          <p>We are thrilled to welcome you to QuizNest ! Your registration is now complete, and you're all set to embark on a journey of knowledge and fun.</p>
+          <p>Here are your login credentials:<br>
+          <b>Username: </b>${user.email}
+          <b>Password: </b>${user.password}
+          </p>
+          <p>We're excited to have you as a part of our community. Get ready to explore a world of quizzes and challenge your intellect. If you ever need assistance or have any questions, our support team is here to help.<p>
+          <h4>Thanks & Regards,</h4>
+          <h4>Team QuizNest</h4></div>`,
+        });
+  
+        sendToken(user, 201, res);
+      } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+      }
   })
 );
-
-// await sendMail({
-//   email: user.email,
-//   subject: "Welcome to QuizNest",
-//   message: `Dear ${user.name},\n\n
-//   We are thrilled to welcome you to QuizNest ! Your registration is now complete, and you're all set to embark on a journey of knowledge and fun.\n\n
-//   Here are your login credentials:\n\n
-//   \tUsername: ${user.email}\n
-//   \tPassword: ${user.password}\n\n
-//   We're excited to have you as a part of our community. Get ready to explore a world of quizzes and challenge your intellect. If you ever need assistance or have any questions, our support team is here to help\n\n\n
-//   Thanks & Regards,\n
-//   Team QuesNest`,
-// });
 
 // Login User
 router.post(
