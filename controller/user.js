@@ -37,7 +37,7 @@ router.post(
         message: `<div><h3>Dear ${user.name},</h3>
         <p>Welcome to QuizNest ! We're thrilled that you've joined our community of quiz enthusiasts. To get started, you'll need to activate your account. This is a simple process; just click the link below to verify your email address and unlock all the exciting features of our platform:</p>
         <a href="${acativationUrl}">Click Here</a>
-        <p>Please note that this activation link will expire in 24 hours, so make sure to complete the activation process as soon as possible.</p>
+        <p>Please note that this activation link will expire in 5 minutes, so make sure to complete the activation process as soon as possible.</p>
         <p>Once your account is activated, you can enjoy all the benefits of QuizNest , including quiz participation, leaderboard rankings, and personalized recommendations.<p>
         <h4>Thanks & Regards,</h4>
         <h4>Team QuizNest</h4></div>`,
