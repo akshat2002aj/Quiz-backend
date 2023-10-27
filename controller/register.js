@@ -8,6 +8,7 @@ const express = require("express");
 const { isAdmin, isAuthenticated } = require("../middleware/auth");
 const router = require("./quiz");
 const Register = require("../model/register");
+const sendMail = require("../utils/SendMail");
 
 router.post(
   "/register-user-to-quiz/:id",
@@ -33,10 +34,43 @@ router.post(
       quiz: req.params.id,
     });
 
+    function formatDate(date) {
+      const formattedDate = new Intl.DateTimeFormat("en-GB", {
+        year: "2-digit",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(new Date(date));
+  
+      return formattedDate;
+    }  
+    
+    try {
+      await sendMail({
+        email: req.user.email,
+        subject: `Confirmation: Registration for ${data.name}`,
+        message: `<div><h3>Dear ${req.user.name},</h3>
+        <p>Congratulations! You have successfully registered for the quiz, <b>${data.name}</b> on QuizNest . We're excited to have you participate in this event.
+        </p>
+        <p>Here are the details for the quiz:<br>
+        <b>Quiz Title: </b>${data.name}<br>
+        <b>Start Date and Time: </b>${formatDate(data.startTime)}<br>
+        <b>End Date and Time: </b>${formatDate(data.endTime)}<br>
+        <b>Duration: </b>${data.duration}
+        </p>
+        <p>Please make sure to be ready at least 15 minutes before the quiz begins. Don't forget to bring your enthusiasm and competitive spirit!<p>
+        <h4>Thanks & Regards,</h4>
+        <h4>Team QuizNest</h4></div>`,
+      });
+
     res.status(201).json({
       succes: true,
       register,
     });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
   })
 );
 
