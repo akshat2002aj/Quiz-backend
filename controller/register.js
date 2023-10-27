@@ -59,7 +59,7 @@ router.post(
         <b>Quiz Title: </b>${data.name}<br>
         <b>Start Date and Time: </b>${formatDate(data.startTime)}<br>
         <b>End Date and Time: </b>${formatDate(data.endTime)}<br>
-        <b>Duration: </b>${data.duration}
+        <b>Duration: </b>${data.duration} minutes
         </p>
         <p>Please make sure to be ready at least 15 minutes before the quiz begins. Don't forget to bring your enthusiasm and competitive spirit!<p>
         <h4>Thanks & Regards,</h4>
