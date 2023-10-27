@@ -37,4 +37,11 @@ const quizschema = new mongoose.Schema({
    } 
 })
 
+// Cascade delete courses when a bootcamp is deleted
+quizschema.pre('remove', async function(next) {
+    await this.model('Question').deleteMany({ quiz: this._id });
+     await this.model('Register').deleteMany({ quiz: this._id });
+    next();
+});
+
 module.exports = mongoose.model("Quiz", quizschema)

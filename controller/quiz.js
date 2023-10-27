@@ -66,6 +66,25 @@ router.get(
   })
 );
 
+router.delete(
+  "/delete-quiz/:id",
+  isAuthenticated,
+  isAdmin("admin"),
+  catchAsyncErrors(async (req, res, next) => {
+    const quiz = await Quiz.findById(req.params.id)
+
+    if (!quiz) {
+      return next(new ErrorHandler(`Quiz not found with this id`, 404));
+    }
+
+    await quiz.remove();
+    res.status(201).json({
+      success: true,
+      quiz:{},
+    });
+  })
+);
+
 router.get(
   "/get-quiz/:id",
   isAuthenticated,
