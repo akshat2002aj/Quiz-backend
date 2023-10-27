@@ -199,6 +199,26 @@ router.post(
 );
 
 router.get(
+  "/delete-registration/:id",
+  isAuthenticated,
+  isAdmin("admin"),
+  CatchAsyncError(async (req, res, next) => {
+    const reg = await Register.findById(req.params.id);
+
+    if (!reg) {
+      return next(new ErrorHandler(`Quiz not found with this id`, 404));
+    }
+
+    let register = await Register.findByIdAndDelete(req.params.id)
+
+    res.status(201).json({
+      succes: true,
+      register:{},
+    });
+  })
+);
+
+router.get(
   "/get-registered-quiz/:id",
   isAuthenticated,
   isAdmin("admin"),
