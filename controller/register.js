@@ -95,6 +95,10 @@ router.post(
       return next(new ErrorHandler(`User is not registered`, 401));
     }
 
+    if(register.testStatus === "Processing"){
+      return next(new ErrorHandler(`You are not allowed to give test`))
+    }
+
     if (register.testStatus !== "Registered") {
       return next(new ErrorHandler(`Test already given`, 401));
     }
