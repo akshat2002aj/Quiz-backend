@@ -120,13 +120,11 @@ router.get(
         if(register.testStatus === "Submitted"){
           testGiven = true
         }
+        else if(register.testStatus === "Processing"){
+          testGiven = true;
+        }
         else{
           testGiven = false;
-          if(registered.testStatus === "Processing"){
-            testGiven = true;
-          }else{
-            testGiven = false;
-          }
         }
       }
     }
