@@ -76,8 +76,11 @@ router.delete(
     if (!quiz) {
       return next(new ErrorHandler(`Quiz not found with this id`, 404));
     }
+    await Question.deleteMany({quiz: req.params.id});
+    await Register.deleteMany({quiz: req.params.id});
+    await Quiz.findByIdAndDelete(req.params.id);
 
-    await quiz.remove();
+
     res.status(201).json({
       success: true,
       quiz:{},
