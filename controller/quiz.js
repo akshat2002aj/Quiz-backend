@@ -103,6 +103,7 @@ router.get(
     let registrations = await Register.find({quiz: req.params.id})
     let registered;
     let testGiven;
+    let testExit;
     if(req.user.role === 'user'){
       let register= await Register.findOne({
         quiz: req.params.id,
@@ -119,6 +120,11 @@ router.get(
         }
         else{
           testGiven = false
+          if(registered.testStatus === "Processing"){
+            testExit = true;
+          }else{
+            testExit = false;
+          }
         }
       }
     }
@@ -143,7 +149,8 @@ router.get(
           questions: questions.length,
           registrations: registrations.length,
           registered,
-          testGiven
+          testGiven,
+          testExit,
         }
       }
     }
