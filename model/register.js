@@ -30,6 +30,10 @@ const registerSchema = new mongoose.Schema({
     default: "Registered",
     enum: ["Registered", "Processing", "Submitted"]
   },
+  tabSwitch:{
+    type: Number,
+    default: 0,
+  },
   answers:[
     {
       quiz:{

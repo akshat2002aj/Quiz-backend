@@ -188,6 +188,8 @@ router.post(
         totalMarks: totalMarks,
         marksScored: marksScored,
         testStatus: "Submitted",
+        tabSwitch: req.body.tabSwitch,
+        answers: req.body.questions
       },
       {
         new: true,
