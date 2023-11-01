@@ -118,7 +118,12 @@ router.get(
           testGiven = true
         }
         else{
-          testGiven = false
+          testGiven = false;
+          if(registered.testStatus === "Processing"){
+            testGiven = true;
+          }else{
+            testGiven = false;
+          }
         }
       }
     }
@@ -131,7 +136,7 @@ router.get(
           questions: questions.length,
           registrations: registrations.length
         }
-      }np
+      }
     }else{
       quiz = await Quiz.find({
         published: true,
