@@ -119,11 +119,6 @@ router.get(
         }
         else{
           testGiven = false
-          if(registered.testStatus === "Processing"){
-            testGiven = true;
-          }else{
-            testGiven = false;
-          }
         }
       }
     }
