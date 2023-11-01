@@ -1,5 +1,15 @@
 const mongoose = require("mongoose");
 
+const answerSchema = new mongoose.Schema({
+  quiz: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Quiz",
+  },
+  choosedOption: {
+    type: Number,
+  },
+});
+
 const registerSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
@@ -34,17 +44,7 @@ const registerSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  answers:[
-    {
-      quiz:{
-        type: mongoose.Schema.ObjectId,
-        ref: "Quiz",
-      },
-      choosedOption:{
-        type: Number,
-      }
-    }
-  ]
+  answers:[answerSchema]
 });
 
 module.exports = mongoose.model("Register", registerSchema);
